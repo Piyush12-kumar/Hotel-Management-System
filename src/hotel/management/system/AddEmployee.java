@@ -1,0 +1,173 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package hotel.management.system;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+/**
+ *
+ * @author This PC
+ */
+public class AddEmployee extends JFrame implements ActionListener{
+    JLabel lbname,lbagee,lbgender,lbaadhar,lbjob,lbSalary,lbPhone,lbEmail;
+    JTextField tfname,tfaadhar,tfage,tfSalary,tfPhone,tfEmail;
+    JRadioButton rbmale,rbfemale,rbother;
+    JButton submit;
+    JComboBox cbjob;
+    AddEmployee(){
+        setLayout(null);
+        
+        lbname = new JLabel("NAME");
+        lbname.setBounds(60,30,120,30);
+        lbname.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbname);
+        
+        tfname = new JTextField();
+        tfname.setBounds(200,30,150,30);
+        add(tfname);
+        
+        lbagee = new JLabel("AGE");
+        lbagee.setBounds(60,80,120,30);
+        lbagee.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbagee);
+        
+        tfage = new JTextField();
+        tfage.setBounds(200,80,150,30);
+        add(tfage);
+        
+        lbgender = new JLabel("GENDER");
+        lbgender.setBounds(60,130,120,30);
+        lbgender.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbgender);
+        
+        rbmale = new JRadioButton("Male");
+        rbmale.setBounds(200,130,52,40);
+        rbmale.setFont(new Font("Tahoma",Font.PLAIN,12));
+        rbmale.setBackground(Color.WHITE);
+        add(rbmale);
+        
+        rbfemale = new JRadioButton("Female");
+        rbfemale.setBounds(250,130,70,40);
+        rbfemale.setFont(new Font("Tahoma",Font.PLAIN,12));
+        rbfemale.setBackground(Color.WHITE);
+        add(rbfemale);
+        
+        rbother = new JRadioButton("Other");
+        rbother.setBounds(320,130,70,40);
+        rbother.setFont(new Font("Tahoma",Font.PLAIN,12));
+        rbother.setBackground(Color.WHITE);
+        add(rbother);
+        
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(rbfemale);
+        bg.add(rbmale);
+        bg.add(rbother);
+        
+        lbjob = new JLabel("JOB");
+        lbjob.setBounds(60,180,120,30);
+        lbjob.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbjob);
+        
+        String[] str = {"Front Desk Clerks","Porters","HouseKeeping","Kitchen Staff","Room Servive","Chefs","Waiter/Waitress","Manager","Accountant"};
+        cbjob = new JComboBox(str);
+        cbjob.setBounds(200,180,150,30);
+        cbjob.setBackground(Color.WHITE);
+        add(cbjob);
+        
+        lbSalary = new JLabel("SALARY");
+        lbSalary.setBounds(60,230,120,30);
+        lbSalary.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbSalary);
+        
+        tfSalary = new JTextField();
+        tfSalary.setBounds(200,230,150,30);
+        add(tfSalary);
+        
+        lbPhone = new JLabel("PHONE");
+        lbPhone.setBounds(60,280,120,30);
+        lbPhone.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbPhone);
+        
+        tfPhone = new JTextField();
+        tfPhone.setBounds(200,280,150,30);
+        add(tfPhone);
+        
+        lbaadhar = new JLabel("AADHAR");
+        lbaadhar.setBounds(60,380,120,30);
+        lbaadhar.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbaadhar);
+        
+        tfaadhar = new JTextField();
+        tfaadhar.setBounds(200,380,150,30);
+        add(tfaadhar);
+        
+        lbEmail = new JLabel("EMAIL");
+        lbEmail.setBounds(60,330,120,30);
+        lbEmail.setFont(new Font("Tahoma",Font.PLAIN,17));
+        add(lbEmail);
+        
+        tfEmail = new JTextField();
+        tfEmail.setBounds(200,330,150,30);
+        add(tfEmail);
+        
+        submit = new JButton("SUBMIT");
+        submit.setBackground(Color.BLACK);
+        submit.setForeground(Color.WHITE);
+        submit.setBounds(200,430,150,30);
+        submit.addActionListener(this);
+        add(submit);
+        
+        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("Images\\tenth.jpg"));
+        Image i2  = i1.getImage().getScaledInstance(450, 450, Image.SCALE_DEFAULT);
+        ImageIcon i3 = new ImageIcon(i2);
+        JLabel image = new JLabel(i3);
+        image.setBounds(380,60,450,370);
+        add(image);
+        
+        getContentPane().setBackground(Color.WHITE);
+        setBounds(350,200,850,540);
+        setVisible(true);
+        
+    }
+    @Override
+    public void actionPerformed(ActionEvent ae){
+        String name = tfname.getText();
+        String age = tfage.getText();
+        String salary = tfSalary.getText();
+        String phone = tfPhone.getText();
+        String Email = tfEmail.getText();
+        String Aadhar = tfaadhar.getText();
+        String gender = null;
+        
+        if(name.equals("")){
+            JOptionPane.showMessageDialog(null,"Name Should Not Be Empty");
+            return ;
+        }
+        if(rbmale.isSelected()){
+            gender="Male";
+        }
+        else if(rbfemale.isSelected()){
+            gender="Female";
+        }
+        else if(rbother.isSelected()){
+            gender="Other";
+        }
+        
+        String job = (String)cbjob.getSelectedItem();
+        try{
+            Conn conn = new Conn();
+            String query = "insert into employee values('"+name+"', '"+age+"','"+gender+"','"+job+"','"+salary+"','"+phone+"','"+Email+"','"+Aadhar+"')";
+            conn.s.executeUpdate(query);
+            JOptionPane.showMessageDialog(null, "Employee Added Successfully");
+            setVisible(false);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static void main(String[] args){
+        new AddEmployee();
+    }
+}
